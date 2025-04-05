@@ -25,6 +25,14 @@ struct HabitItem: Identifiable {
     var isCompleted: Bool
 }
 
+// 情绪模型
+struct EmotionItem: Identifiable {
+    var id: Int
+    var name: String
+    var emoji: String
+    var isSelected: Bool
+}
+
 struct ContentView: View {
     // 标记当前选中的标签页
     @State private var selectedTab = 0
@@ -52,7 +60,7 @@ struct ContentView: View {
                 }
                 .tag(2)
             
-            Text("心灵空间")
+            MindSpaceView()
                 .tabItem {
                     Image(systemName: "brain")
                     Text("心灵空间")
@@ -661,6 +669,226 @@ struct HabitCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.white)
                 .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
+        )
+    }
+}
+
+// 心灵空间视图
+struct MindSpaceView: View {
+    @State private var emotions: [EmotionItem] = [
+        EmotionItem(id: 1, name: "平静", emoji: "😌", isSelected: false),
+        EmotionItem(id: 2, name: "愉悦", emoji: "😊", isSelected: true),
+        EmotionItem(id: 3, name: "低落", emoji: "😔", isSelected: false)
+    ]
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                // 顶部标题区域
+                ZStack {
+                    Rectangle()
+                        .fill(Color(red: 0.9, green: 0.95, blue: 1.0))
+                        .frame(height: 140)
+                        .edgesIgnoringSafeArea(.top)
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("心灵空间")
+                            .font(.system(size: 30, weight: .bold))
+                            .foregroundColor(.black)
+                        
+                        Text("静心，减负，内在的减法之旅")
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                // 今日情绪卡片
+                EmotionCardView(emotions: $emotions)
+                    .padding(.horizontal, 20)
+                
+                // 今日冥想卡片
+                MeditationCardView()
+                    .padding(.horizontal, 20)
+                
+                // 今日反思卡片
+                ReflectionCardView()
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 30)
+            }
+        }
+        .background(Color(UIColor.systemGray6))
+        .edgesIgnoringSafeArea(.top)
+    }
+}
+
+// 情绪卡片视图
+struct EmotionCardView: View {
+    @Binding var emotions: [EmotionItem]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("今日情绪")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.black)
+            
+            Text("选择你当前的情绪状态，记录情绪变化")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+            
+            HStack(spacing: 30) {
+                ForEach(0..<emotions.count) { index in
+                    EmotionButton(emotion: $emotions[index], allEmotions: $emotions)
+                }
+            }
+            .padding(.top, 10)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+        )
+    }
+}
+
+// 情绪按钮视图
+struct EmotionButton: View {
+    @Binding var emotion: EmotionItem
+    @Binding var allEmotions: [EmotionItem]
+    
+    var body: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 70, height: 70)
+                    .overlay(
+                        Circle()
+                            .stroke(emotion.isSelected ? Color.blue : Color.clear, lineWidth: 2)
+                    )
+                    .shadow(color: Color.black.opacity(0.05), radius: 3, x: 0, y: 1)
+                
+                Text(emotion.emoji)
+                    .font(.system(size: 32))
+            }
+            .contentShape(Circle())
+            .onTapGesture {
+                for i in 0..<allEmotions.count {
+                    allEmotions[i].isSelected = (allEmotions[i].id == emotion.id)
+                }
+            }
+            
+            Text(emotion.name)
+                .font(.system(size: 16))
+                .foregroundColor(.black)
+        }
+    }
+}
+
+// 冥想卡片视图
+struct MeditationCardView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            HStack {
+                Text("今日冥想")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(.black)
+                
+                Spacer()
+                
+                Text("15分钟")
+                    .font(.system(size: 16))
+                    .foregroundColor(.gray)
+            }
+            
+            Text("专注呼吸，让心灵回归简单")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+                .padding(.bottom, 10)
+            
+            // 播放按钮
+            Button(action: {
+                // 播放冥想音频逻辑
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: 80, height: 80)
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(Color.blue)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.vertical, 10)
+            
+            // 冥想类型按钮
+            HStack(spacing: 20) {
+                MeditationTypeButton(title: "减压")
+                
+                MeditationTypeButton(title: "专注")
+                
+                MeditationTypeButton(title: "放松")
+            }
+            .padding(.top, 5)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(red: 0.9, green: 0.95, blue: 1.0))
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+        )
+    }
+}
+
+// 冥想类型按钮
+struct MeditationTypeButton: View {
+    var title: String
+    
+    var body: some View {
+        Button(action: {
+            // 选择冥想类型逻辑
+        }) {
+            Text(title)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.black)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.white)
+                        .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
+                )
+        }
+    }
+}
+
+// 反思卡片视图
+struct ReflectionCardView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text("今日反思")
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.black)
+            
+            Text("记录你今天的减法收获和感悟")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+            
+            Divider()
+                .padding(.vertical, 5)
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
         )
     }
 }
