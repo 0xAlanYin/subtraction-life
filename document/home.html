@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减法人生 - 首页</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: white;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            height: 100vh;
+        }
+        .progress-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .progress-ring-background {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: #F2F2F2;
+        }
+        .progress-ring-fill {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(#333 0% 75%, #F2F2F2 75% 100%);
+        }
+        .progress-ring-inner {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: white;
+            z-index: 2;
+        }
+        .progress-text {
+            position: relative;
+            z-index: 10;
+            font-size: 36px;
+            font-weight: 300;
+            color: #333;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+            border: 1px solid #F0F0F0;
+        }
+        .item {
+            border-bottom: 1px solid #f5f5f5;
+            padding: 16px 0;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .task-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+        }
+        .task-checked {
+            background-color: #10B981;
+            color: white;
+        }
+        .task-unchecked {
+            border: 2px solid #E5E5E5;
+        }
+        .category-tag {
+            font-size: 12px;
+            color: #6B7280;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- 禅意环形进度指示器 -->
+        <div class="flex justify-center mb-8">
+            <div class="progress-ring">
+                <div class="progress-ring-background"></div>
+                <div class="progress-ring-fill"></div>
+                <div class="progress-ring-inner"></div>
+                <div class="progress-text">75%</div>
+            </div>
+        </div>
+        
+        <!-- 今日格言卡片 -->
+        <div class="card mb-6">
+            <h2 class="text-lg font-medium text-gray-700 mb-3">今日格言</h2>
+            <p class="text-gray-600 italic text-center text-lg mb-2">"万物皆有时，减法亦有度。"</p>
+            <p class="text-right text-sm text-gray-500">—— 《减法人生》</p>
+        </div>
+        
+        <!-- 待减项目清单 -->
+        <div class="card">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-medium text-gray-700">今日待减项目</h2>
+                <span class="text-sm text-gray-500">3/4 已完成</span>
+            </div>
+            
+            <div class="item flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="task-check task-checked">
+                        <i class="fas fa-check text-sm"></i>
+                    </div>
+                    <span>整理书架，捐出不再阅读的书籍</span>
+                </div>
+                <span class="category-tag">物质</span>
+            </div>
+            
+            <div class="item flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="task-check task-checked">
+                        <i class="fas fa-check text-sm"></i>
+                    </div>
+                    <span>整理电子邮件，取消不必要的订阅</span>
+                </div>
+                <span class="category-tag">数字</span>
+            </div>
+            
+            <div class="item flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="task-check task-checked">
+                        <i class="fas fa-check text-sm"></i>
+                    </div>
+                    <span>减少社交媒体使用时间</span>
+                </div>
+                <span class="category-tag">时间</span>
+            </div>
+            
+            <div class="item flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="task-check task-unchecked"></div>
+                    <span>清理手机应用，移除不常用软件</span>
+                </div>
+                <span class="category-tag">数字</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

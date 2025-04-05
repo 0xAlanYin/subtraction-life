@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减法人生 - 心灵空间</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            height: 100vh;
+        }
+        .overlay {
+            background: rgba(255, 255, 255, 0.92);
+            min-height: 100%;
+            padding-bottom: 20px;
+        }
+        .header {
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+        }
+        .emotion-selector {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .emotion-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+        .emotion-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            background: #f5f5f5;
+            border: 2px solid transparent;
+            font-size: 24px;
+        }
+        .emotion-active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .meditation-box {
+            background: linear-gradient(to right, #E0EAFC, #CFDEF3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .quote-box {
+            background: linear-gradient(to right, #f7f8f8, #acbb78);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .textarea-custom {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            resize: none;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <!-- 页面头部 -->
+        <div class="header">
+            <h1 class="text-2xl font-medium">心灵空间</h1>
+            <p class="text-sm text-gray-600 mt-1">静心，减负，内在的减法之旅</p>
+        </div>
+        
+        <div class="px-4 pt-4">
+            <!-- 情绪选择器 -->
+            <div class="card">
+                <h2 class="text-lg font-medium mb-3">今日情绪</h2>
+                <p class="text-sm text-gray-500 mb-3">选择你当前的情绪状态，记录情绪变化</p>
+                
+                <div class="emotion-selector">
+                    <div class="emotion-item">
+                        <div class="emotion-circle">😌</div>
+                        <span class="text-xs">平静</span>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle emotion-active">😊</div>
+                        <span class="text-xs">愉悦</span>
+                    </div>
+                    <div class="emotion-item">
+                        <div class="emotion-circle">😔</div>
+                        <span class="text-xs">低落</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 冥想指导模块 -->
+            <div class="meditation-box">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-medium">今日冥想</h2>
+                    <span class="text-sm">15分钟</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">专注呼吸，让心灵回归简单</p>
+                <div class="flex justify-center items-center bg-white rounded-full w-16 h-16 mx-auto shadow-md">
+                    <i class="fas fa-play text-blue-500"></i>
+                </div>
+                <div class="grid grid-cols-3 gap-3 mt-4">
+                    <div class="bg-white rounded-lg p-2 text-center shadow-sm">
+                        <span class="text-xs">减压</span>
+                    </div>
+                    <div class="bg-white rounded-lg p-2 text-center shadow-sm">
+                        <span class="text-xs">专注</span>
+                    </div>
+                    <div class="bg-white rounded-lg p-2 text-center shadow-sm">
+                        <span class="text-xs">放松</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 今日反思日记 -->
+            <div class="card">
+                <h2 class="text-lg font-medium mb-3">今日反思</h2>
+                <p class="text-sm text-gray-500 mb-3">记录你今天的减法收获和感悟</p>
+                <textarea class="textarea-custom" rows="4" placeholder="今天，我通过减法发现..."></textarea>
+                <div class="flex justify-end mt-3">
+                    <button class="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm">保存</button>
+                </div>
+            </div>
+            
+            <!-- 心灵锦囊 -->
+            <div class="quote-box">
+                <h2 class="text-lg font-medium mb-3">今日格言</h2>
+                <p class="italic text-lg mb-2">"不是拥有的太少，而是渴望的太多。"</p>
+                <p class="text-right text-sm">—— 爱比克泰德</p>
+            </div>
+            
+            <!-- 历史记录入口 -->
+            <div class="card flex justify-between items-center">
+                <div>
+                    <h3 class="font-medium">反思历史</h3>
+                    <p class="text-xs text-gray-500">查看过去的心灵记录</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

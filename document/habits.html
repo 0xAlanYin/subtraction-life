@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减法人生 - 习惯培养</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1600596432478-0560bfb09c95?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            height: 100vh;
+        }
+        .overlay {
+            background: rgba(255, 255, 255, 0.9);
+            min-height: 100%;
+            padding-bottom: 20px;
+        }
+        .header {
+            padding: 20px;
+            background: rgba(245, 245, 245, 0.8);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .week-overview {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .day-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: #555;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+        .day-completed {
+            background: #424242;
+            color: white;
+            border: none;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 25px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 23px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            border: 3px solid white;
+        }
+        .timeline-dot-completed {
+            background: #424242;
+        }
+        .habit-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #424242;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <!-- 页面头部 -->
+        <div class="header">
+            <h1 class="text-2xl font-medium">习惯培养</h1>
+            <p class="text-sm text-gray-600 mt-1">通过习惯培养，减法生活更持久</p>
+            
+            <!-- 周进度概览 -->
+            <div class="week-overview">
+                <div class="flex flex-col items-center">
+                    <div class="day-circle day-completed">一</div>
+                    <div class="text-xs mt-1">周一</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle day-completed">二</div>
+                    <div class="text-xs mt-1">周二</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle day-completed">三</div>
+                    <div class="text-xs mt-1">周三</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle day-completed">四</div>
+                    <div class="text-xs mt-1">周四</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle day-completed">五</div>
+                    <div class="text-xs mt-1">周五</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle">六</div>
+                    <div class="text-xs mt-1">周六</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="day-circle">日</div>
+                    <div class="text-xs mt-1">周日</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 今日进度 -->
+        <div class="px-4 py-3 bg-white shadow-sm">
+            <div class="flex justify-between">
+                <h2 class="text-lg font-medium">本周进度</h2>
+                <span class="text-sm text-gray-500">5/7</span>
+            </div>
+            <div class="progress-bar mt-2">
+                <div class="progress-fill" style="width: 71.4%"></div>
+            </div>
+        </div>
+        
+        <!-- 习惯打卡时间轴 -->
+        <div class="px-4">
+            <h2 class="text-lg font-medium my-4">今日习惯</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot timeline-dot-completed"></div>
+                    <span class="text-sm text-gray-500">07:00</span>
+                    <div class="habit-card">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">冥想15分钟</h3>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">清晨冥想，专注当下</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot timeline-dot-completed"></div>
+                    <span class="text-sm text-gray-500">08:30</span>
+                    <div class="habit-card">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">整理工作区域</h3>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">保持桌面整洁，每天出门前整理</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot timeline-dot-completed"></div>
+                    <span class="text-sm text-gray-500">12:30</span>
+                    <div class="habit-card">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">午餐后短散步</h3>
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">饭后轻松散步15分钟</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="text-sm text-gray-500">18:00</span>
+                    <div class="habit-card">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">阅读30分钟</h3>
+                            <i class="far fa-circle text-gray-300"></i>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">每日阅读，培养思考习惯</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="text-sm text-gray-500">22:00</span>
+                    <div class="habit-card">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">每日反思</h3>
+                            <i class="far fa-circle text-gray-300"></i>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">记录今日的减法收获</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 添加按钮 -->
+        <div class="fixed bottom-24 right-4 bg-gray-800 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+            <i class="fas fa-plus"></i>
+        </div>
+    </div>
+</body>
+</html> 

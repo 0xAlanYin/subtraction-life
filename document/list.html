@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减法人生 - 减法清单</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            height: 100vh;
+        }
+        .header {
+            background: url('https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80') no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 120px;
+            position: relative;
+        }
+        .header-overlay {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .header-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+        }
+        .scroll-list {
+            height: calc(100vh - 220px);
+            overflow-y: auto;
+            padding: 10px 0;
+            background: url('https://images.unsplash.com/photo-1581345331934-2e2958bfee44?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80') center;
+            background-size: cover;
+        }
+        .scroll-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            margin: 10px;
+            padding: 15px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-right: 5px;
+        }
+        .tag-material {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .tag-digital {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+        .tag-time {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #e0e0e0;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background-color: #424242;
+        }
+        .add-button {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #212121;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部 -->
+    <div class="header">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1 class="text-white text-2xl font-medium mb-1">减法清单</h1>
+            <p class="text-gray-200 text-sm">通过持续减法，让生活回归本质</p>
+        </div>
+    </div>
+    
+    <!-- 分类标签 -->
+    <div class="px-4 py-3 bg-white flex items-center border-b">
+        <div class="mr-4 flex items-center">
+            <span class="text-sm mr-2">分类:</span>
+            <div class="flex">
+                <button class="tag tag-material mr-1">物质</button>
+                <button class="tag tag-digital mr-1">数字</button>
+                <button class="tag tag-time">时间</button>
+            </div>
+        </div>
+        <div class="ml-auto">
+            <button class="text-gray-500">
+                <i class="fas fa-filter"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 卷轴式清单 -->
+    <div class="scroll-list">
+        <div class="scroll-container">
+            <div class="flex justify-between mb-1">
+                <h3 class="font-medium">衣橱减法计划</h3>
+                <div class="tag tag-material">物质</div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">整理衣物，捐赠或出售不再穿着的物品</p>
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>进度</span>
+                <span>70%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 70%"></div>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <div class="flex justify-between mb-1">
+                <h3 class="font-medium">电子邮件整理</h3>
+                <div class="tag tag-digital">数字</div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">取消订阅无用邮件，归档重要信息</p>
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>进度</span>
+                <span>45%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%"></div>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <div class="flex justify-between mb-1">
+                <h3 class="font-medium">减少会议时间</h3>
+                <div class="tag tag-time">时间</div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">优化会议流程，缩短无效会议时间</p>
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>进度</span>
+                <span>30%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 30%"></div>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <div class="flex justify-between mb-1">
+                <h3 class="font-medium">厨房物品精简</h3>
+                <div class="tag tag-material">物质</div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">移除重复或不常用的厨具，保留核心物品</p>
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>进度</span>
+                <span>85%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 85%"></div>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <div class="flex justify-between mb-1">
+                <h3 class="font-medium">手机应用精简</h3>
+                <div class="tag tag-digital">数字</div>
+            </div>
+            <p class="text-sm text-gray-600 mb-2">移除不常用的应用，整理主屏幕</p>
+            <div class="flex justify-between text-xs text-gray-500 mb-1">
+                <span>进度</span>
+                <span>60%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加按钮 -->
+    <div class="add-button">
+        <i class="fas fa-plus"></i>
+    </div>
+</body>
+</html> 

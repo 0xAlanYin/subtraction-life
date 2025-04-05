@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减法人生 - 原型</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+        .device-frame {
+            width: 390px;
+            height: 844px;
+            border-radius: 44px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 12px solid #1a1a1a;
+            position: relative;
+            background: #000;
+        }
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            background-color: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100% - 44px - 80px);
+            border: none;
+            margin-top: 44px;
+        }
+        .tab-bar {
+            height: 80px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #8e8e93;
+            font-size: 10px;
+            padding: 5px;
+            width: 70px;
+        }
+        .tab-item.active {
+            color: #000;
+        }
+        .tab-item i {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        .prototype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 40px;
+            padding: 40px;
+        }
+        .prototype-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .prototype-label {
+            margin-top: 16px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto py-10">
+        <h1 class="text-3xl font-bold text-center mb-10">减法人生原型设计</h1>
+        
+        <div class="prototype-grid">
+            <!-- 首页原型 -->
+            <div class="prototype-item">
+                <div class="device-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div>
+                            <span class="mr-1"><i class="fas fa-signal"></i></span>
+                            <span class="mr-1"><i class="fas fa-wifi"></i></span>
+                            <span><i class="fas fa-battery-full"></i></span>
+                        </div>
+                    </div>
+                    <iframe src="home.html" frameborder="0"></iframe>
+                    <div class="tab-bar">
+                        <div class="tab-item active">
+                            <i class="fas fa-home"></i>
+                            <span>首页</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-list-check"></i>
+                            <span>减法清单</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>习惯培养</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-brain"></i>
+                            <span>心灵空间</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prototype-label">首页</div>
+            </div>
+
+            <!-- 减法清单原型 -->
+            <div class="prototype-item">
+                <div class="device-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div>
+                            <span class="mr-1"><i class="fas fa-signal"></i></span>
+                            <span class="mr-1"><i class="fas fa-wifi"></i></span>
+                            <span><i class="fas fa-battery-full"></i></span>
+                        </div>
+                    </div>
+                    <iframe src="list.html" frameborder="0"></iframe>
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="fas fa-home"></i>
+                            <span>首页</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="fas fa-list-check"></i>
+                            <span>减法清单</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>习惯培养</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-brain"></i>
+                            <span>心灵空间</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prototype-label">减法清单</div>
+            </div>
+
+            <!-- 习惯培养原型 -->
+            <div class="prototype-item">
+                <div class="device-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div>
+                            <span class="mr-1"><i class="fas fa-signal"></i></span>
+                            <span class="mr-1"><i class="fas fa-wifi"></i></span>
+                            <span><i class="fas fa-battery-full"></i></span>
+                        </div>
+                    </div>
+                    <iframe src="habits.html" frameborder="0"></iframe>
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="fas fa-home"></i>
+                            <span>首页</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-list-check"></i>
+                            <span>减法清单</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>习惯培养</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-brain"></i>
+                            <span>心灵空间</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prototype-label">习惯培养</div>
+            </div>
+
+            <!-- 心灵空间原型 -->
+            <div class="prototype-item">
+                <div class="device-frame">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <div>
+                            <span class="mr-1"><i class="fas fa-signal"></i></span>
+                            <span class="mr-1"><i class="fas fa-wifi"></i></span>
+                            <span><i class="fas fa-battery-full"></i></span>
+                        </div>
+                    </div>
+                    <iframe src="mind.html" frameborder="0"></iframe>
+                    <div class="tab-bar">
+                        <div class="tab-item">
+                            <i class="fas fa-home"></i>
+                            <span>首页</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-list-check"></i>
+                            <span>减法清单</span>
+                        </div>
+                        <div class="tab-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>习惯培养</span>
+                        </div>
+                        <div class="tab-item active">
+                            <i class="fas fa-brain"></i>
+                            <span>心灵空间</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prototype-label">心灵空间</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
