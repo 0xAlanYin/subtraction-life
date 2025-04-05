@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+// 减法项目模型
+struct SubtractionItem: Identifiable {
+    var id: Int
+    var title: String
+    var description: String
+    var category: String
+    var progress: Double
+}
+
 struct ContentView: View {
     // 标记当前选中的标签页
     @State private var selectedTab = 0
@@ -20,7 +29,7 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            Text("减法清单")
+            SubtractionListView()
                 .tabItem {
                     Image(systemName: "list.bullet")
                     Text("减法清单")
@@ -42,6 +51,257 @@ struct ContentView: View {
                 .tag(3)
         }
         .accentColor(.black)
+    }
+}
+
+// 减法清单视图
+struct SubtractionListView: View {
+    // 分类筛选状态
+    @State private var selectedCategory: String? = nil
+    
+    // 减法项目列表
+    @State private var subtractionItems: [SubtractionItem] = [
+        SubtractionItem(
+            id: 1,
+            title: "衣橱减法计划",
+            description: "整理衣物，捐赠或出售不再穿着的物品",
+            category: "物质",
+            progress: 0.7
+        ),
+        SubtractionItem(
+            id: 2,
+            title: "电子邮件整理",
+            description: "取消订阅无用邮件，归档重要信息",
+            category: "数字",
+            progress: 0.45
+        ),
+        SubtractionItem(
+            id: 3,
+            title: "减少会议时间",
+            description: "优化会议流程，缩短无效会议时间",
+            category: "时间",
+            progress: 0.3
+        ),
+        SubtractionItem(
+            id: 4,
+            title: "厨房物品精简",
+            description: "移除重复或不常用的厨具，保留核心物品",
+            category: "物质",
+            progress: 0.85
+        )
+    ]
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // 顶部标题区域
+            ZStack {
+                // 半透明背景图
+                Image("glass_background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 180)
+                    .clipped()
+                    .overlay(Color.black.opacity(0.2))
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("减法清单")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    Text("通过持续减法，让生活回归本质")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.9))
+                }
+                .padding(.horizontal)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            // 分类筛选区域
+            HStack(spacing: 10) {
+                Text("分类：")
+                    .font(.system(size: 16))
+                    .foregroundColor(.black)
+                    .padding(.leading)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        CategoryButton(title: "物质", selectedCategory: $selectedCategory)
+                        CategoryButton(title: "数字", selectedCategory: $selectedCategory)
+                        CategoryButton(title: "时间", selectedCategory: $selectedCategory)
+                    }
+                    .padding(.horizontal, 5)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    // 过滤按钮逻辑
+                }) {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 22))
+                        .foregroundColor(.gray)
+                }
+                .padding(.trailing)
+            }
+            .padding(.vertical, 10)
+            .background(Color.white)
+            
+            // 减法项目列表
+            ScrollView {
+                VStack(spacing: 15) {
+                    ForEach(filteredItems) { item in
+                        SubtractionItemCardView(item: item)
+                            .padding(.horizontal)
+                    }
+                }
+                .padding(.vertical)
+            }
+            
+            Spacer()
+            
+            // 添加新项目按钮
+            VStack {
+                Button(action: {
+                    // 添加新项目逻辑
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.black)
+                            .frame(width: 60, height: 60)
+                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        
+                        Image(systemName: "plus")
+                            .font(.system(size: 30, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding(.bottom, 20)
+            }
+        }
+        .edgesIgnoringSafeArea(.top)
+        .background(Color(UIColor.systemGray6))
+    }
+    
+    // 根据选中的分类筛选项目
+    var filteredItems: [SubtractionItem] {
+        if let category = selectedCategory {
+            return subtractionItems.filter { $0.category == category }
+        } else {
+            return subtractionItems
+        }
+    }
+}
+
+// 分类按钮
+struct CategoryButton: View {
+    var title: String
+    @Binding var selectedCategory: String?
+    
+    var isSelected: Bool {
+        selectedCategory == title
+    }
+    
+    var body: some View {
+        Button(action: {
+            if isSelected {
+                selectedCategory = nil
+            } else {
+                selectedCategory = title
+            }
+        }) {
+            Text(title)
+                .font(.system(size: 15))
+                .padding(.horizontal, 15)
+                .padding(.vertical, 5)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.blue.opacity(0.15) : Color.gray.opacity(0.1))
+                )
+                .foregroundColor(isSelected ? .blue : .black)
+                .overlay(
+                    Capsule()
+                        .stroke(isSelected ? Color.blue.opacity(0.5) : Color.clear, lineWidth: 1)
+                )
+        }
+    }
+}
+
+// 减法项目卡片视图
+struct SubtractionItemCardView: View {
+    var item: SubtractionItem
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(item.title)
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(.black)
+                
+                Spacer()
+                
+                Text(item.category)
+                    .font(.system(size: 14))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
+                    .background(
+                        Capsule()
+                            .fill(categoryColor(item.category).opacity(0.1))
+                    )
+                    .foregroundColor(categoryColor(item.category))
+            }
+            
+            Text(item.description)
+                .font(.system(size: 15))
+                .foregroundColor(.gray)
+                .lineLimit(2)
+            
+            HStack {
+                Text("进度")
+                    .font(.system(size: 14))
+                    .foregroundColor(.gray)
+                
+                Spacer()
+                
+                Text("\(Int(item.progress * 100))%")
+                    .font(.system(size: 14))
+                    .foregroundColor(.gray)
+            }
+            
+            // 进度条
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 8)
+                    .cornerRadius(4)
+                
+                GeometryReader { geometry in
+                    Rectangle()
+                        .fill(categoryColor(item.category))
+                        .frame(width: geometry.size.width * CGFloat(item.progress), height: 8)
+                        .cornerRadius(4)
+                }
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+        )
+    }
+    
+    // 根据分类返回对应的颜色
+    func categoryColor(_ category: String) -> Color {
+        switch category {
+        case "物质":
+            return .green
+        case "数字":
+            return .blue
+        case "时间":
+            return .orange
+        default:
+            return .gray
+        }
     }
 }
 
