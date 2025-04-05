@@ -16,6 +16,15 @@ struct SubtractionItem: Identifiable {
     var progress: Double
 }
 
+// 习惯项目模型
+struct HabitItem: Identifiable {
+    var id: Int
+    var title: String
+    var description: String
+    var time: String
+    var isCompleted: Bool
+}
+
 struct ContentView: View {
     // 标记当前选中的标签页
     @State private var selectedTab = 0
@@ -36,7 +45,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             
-            Text("习惯培养")
+            HabitView()
                 .tabItem {
                     Image(systemName: "calendar")
                     Text("习惯培养")
@@ -437,18 +446,23 @@ struct TodoItemRow: View {
         HStack(spacing: 15) {
             // 完成状态图标
             ZStack {
-                Circle()
-                    .fill(item.isCompleted ? Color.green : Color.white)
-                    .frame(width: 24, height: 24)
-                
                 if item.isCompleted {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 24, height: 24)
+                    
                     Image(systemName: "checkmark")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.white)
                 } else {
                     Circle()
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        .fill(Color.white)
                         .frame(width: 24, height: 24)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                                .frame(width: 24, height: 24)
+                        )
                 }
             }
             
@@ -474,6 +488,181 @@ struct TodoItem: Identifiable {
     var title: String
     var isCompleted: Bool
     var category: String
+}
+
+// 习惯培养视图
+struct HabitView: View {
+    // 习惯项目列表
+    @State private var habitItems: [HabitItem] = [
+        HabitItem(
+            id: 1,
+            title: "冥想15分钟",
+            description: "清晨冥想，专注当下",
+            time: "07:00",
+            isCompleted: true
+        ),
+        HabitItem(
+            id: 2,
+            title: "整理工作区域",
+            description: "保持桌面整洁，每天出门前整理",
+            time: "08:30",
+            isCompleted: true
+        ),
+        HabitItem(
+            id: 3,
+            title: "午餐后短散步",
+            description: "饭后轻松散步15分钟",
+            time: "12:30",
+            isCompleted: true
+        ),
+        HabitItem(
+            id: 4,
+            title: "阅读30分钟",
+            description: "每日阅读，培养思考习惯",
+            time: "18:00",
+            isCompleted: false
+        ),
+        HabitItem(
+            id: 5,
+            title: "每日反思",
+            description: "记录今日的减法收获",
+            time: "22:00",
+            isCompleted: false
+        )
+    ]
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(habitItems) { item in
+                    HabitItemRow(item: item)
+                }
+            }
+            .background(Color(UIColor.systemGray6))
+        }
+        .overlay(
+            VStack {
+                Spacer()
+                Button(action: {
+                    // 添加新习惯逻辑
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(red: 0.1, green: 0.15, blue: 0.25))
+                            .frame(width: 60, height: 60)
+                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        
+                        Image(systemName: "plus")
+                            .font(.system(size: 30, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding(.bottom, 20)
+            }
+        )
+        .background(Color(UIColor.systemGray6))
+        .edgesIgnoringSafeArea(.bottom)
+    }
+}
+
+// 习惯项目行视图
+struct HabitItemRow: View {
+    var item: HabitItem
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            // 时间线
+            VStack(spacing: 0) {
+                ZStack {
+                    if item.isCompleted {
+                        Circle()
+                            .fill(Color.black)
+                            .frame(width: 12, height: 12)
+                    } else {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 12, height: 12)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.gray, lineWidth: 1)
+                                    .frame(width: 12, height: 12)
+                            )
+                    }
+                }
+                
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(width: 2)
+            }
+            .frame(width: 50)
+            .padding(.top, 20)
+            
+            // 习惯卡片
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    Text(item.time)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.gray)
+                    
+                    Spacer()
+                }
+                .padding(.bottom, 5)
+                
+                HabitCard(item: item)
+            }
+            .padding(.trailing, 20)
+            .padding(.bottom, 20)
+        }
+    }
+}
+
+// 习惯卡片视图
+struct HabitCard: View {
+    var item: HabitItem
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(item.title)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.black)
+                
+                Spacer()
+                
+                if item.isCompleted {
+                    ZStack {
+                        Circle()
+                            .fill(Color.green)
+                            .frame(width: 28, height: 28)
+                        
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    Circle()
+                        .fill(Color.white)
+                        .frame(width: 28, height: 28)
+                        .overlay(
+                            Circle()
+                                .stroke(Color.gray.opacity(0.3), lineWidth: 1.5)
+                                .frame(width: 28, height: 28)
+                        )
+                }
+            }
+            
+            Text(item.description)
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+                .lineLimit(2)
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
+        )
+    }
 }
 
 #Preview {
