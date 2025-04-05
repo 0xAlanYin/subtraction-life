@@ -76,6 +76,12 @@ struct SubtractionListView: View {
     // 分类筛选状态
     @State private var selectedCategory: String? = nil
     
+    // 添加项目的状态
+    @State private var isAddingItem = false
+    @State private var newItemTitle = ""
+    @State private var newItemDescription = ""
+    @State private var newItemCategory = "物质"
+    
     // 减法项目列表
     @State private var subtractionItems: [SubtractionItem] = [
         SubtractionItem(
@@ -109,94 +115,227 @@ struct SubtractionListView: View {
     ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            // 顶部标题区域
-            ZStack {
-                // 半透明背景图
-                Image("glass_background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 180)
-                    .clipped()
-                    .overlay(Color.black.opacity(0.2))
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("减法清单")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.white)
+        ZStack {
+            VStack(spacing: 0) {
+                // 顶部标题区域
+                ZStack {
+                    // 半透明背景图
+                    Image("glass_background")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 180)
+                        .clipped()
+                        .overlay(Color.black.opacity(0.2))
                     
-                    Text("通过持续减法，让生活回归本质")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white.opacity(0.9))
-                }
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            
-            // 分类筛选区域
-            HStack(spacing: 10) {
-                Text("分类：")
-                    .font(.system(size: 16))
-                    .foregroundColor(.black)
-                    .padding(.leading)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        CategoryButton(title: "物质", selectedCategory: $selectedCategory)
-                        CategoryButton(title: "数字", selectedCategory: $selectedCategory)
-                        CategoryButton(title: "时间", selectedCategory: $selectedCategory)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("减法清单")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.white)
+                        
+                        Text("通过持续减法，让生活回归本质")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.9))
                     }
-                    .padding(.horizontal, 5)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                // 分类筛选区域
+                HStack(spacing: 10) {
+                    Text("分类：")
+                        .font(.system(size: 16))
+                        .foregroundColor(.black)
+                        .padding(.leading)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            CategoryButton(title: "物质", selectedCategory: $selectedCategory)
+                            CategoryButton(title: "数字", selectedCategory: $selectedCategory)
+                            CategoryButton(title: "时间", selectedCategory: $selectedCategory)
+                        }
+                        .padding(.horizontal, 5)
+                    }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        // 过滤按钮逻辑
+                    }) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .font(.system(size: 22))
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.trailing)
+                }
+                .padding(.vertical, 10)
+                .background(Color.white)
+                
+                // 减法项目列表
+                ScrollView {
+                    VStack(spacing: 15) {
+                        ForEach(filteredItems) { item in
+                            SubtractionItemCardView(item: item)
+                                .padding(.horizontal)
+                        }
+                    }
+                    .padding(.vertical)
                 }
                 
                 Spacer()
                 
-                Button(action: {
-                    // 过滤按钮逻辑
-                }) {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .font(.system(size: 22))
-                        .foregroundColor(.gray)
-                }
-                .padding(.trailing)
-            }
-            .padding(.vertical, 10)
-            .background(Color.white)
-            
-            // 减法项目列表
-            ScrollView {
-                VStack(spacing: 15) {
-                    ForEach(filteredItems) { item in
-                        SubtractionItemCardView(item: item)
-                            .padding(.horizontal)
+                // 添加新项目按钮
+                VStack {
+                    Button(action: {
+                        isAddingItem = true
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.black)
+                                .frame(width: 60, height: 60)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            
+                            Image(systemName: "plus")
+                                .font(.system(size: 30, weight: .medium))
+                                .foregroundColor(.white)
+                        }
                     }
+                    .padding(.bottom, 20)
                 }
-                .padding(.vertical)
             }
+            .edgesIgnoringSafeArea(.top)
+            .background(Color(UIColor.systemGray6))
             
-            Spacer()
-            
-            // 添加新项目按钮
-            VStack {
-                Button(action: {
-                    // 添加新项目逻辑
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color.black)
-                            .frame(width: 60, height: 60)
-                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+            // 添加新项目的表单
+            if isAddingItem {
+                Color.black.opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        isAddingItem = false
+                    }
+                
+                VStack(spacing: 20) {
+                    Text("添加新减法项目")
+                        .font(.system(size: 22, weight: .bold))
+                        .padding(.top, 5)
+                    
+                    // 项目标题输入框
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("标题")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                            .padding(.leading, 5)
                         
-                        Image(systemName: "plus")
-                            .font(.system(size: 30, weight: .medium))
-                            .foregroundColor(.white)
+                        TextField("测试项目", text: $newItemTitle)
+                            .font(.system(size: 18))
+                            .padding()
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(8)
+                    }
+                    
+                    // 项目描述输入框
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("描述")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                            .padding(.leading, 5)
+                        
+                        TextField("", text: $newItemDescription)
+                            .font(.system(size: 18))
+                            .padding()
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(8)
+                    }
+                    
+                    // 类别选择器
+                    HStack {
+                        Button(action: {
+                            newItemCategory = "物质"
+                        }) {
+                            Text("物质")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(newItemCategory == "物质" ? Color.blue.opacity(0.1) : Color(UIColor.systemGray6))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(newItemCategory == "物质" ? Color.blue : Color.clear, lineWidth: 1)
+                                        )
+                                )
+                                .foregroundColor(newItemCategory == "物质" ? .blue : .black)
+                        }
+                        
+                        Button(action: {
+                            newItemCategory = "数字"
+                        }) {
+                            Text("数字")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(newItemCategory == "数字" ? Color.blue.opacity(0.1) : Color(UIColor.systemGray6))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(newItemCategory == "数字" ? Color.blue : Color.clear, lineWidth: 1)
+                                        )
+                                )
+                                .foregroundColor(newItemCategory == "数字" ? .blue : .black)
+                        }
+                        
+                        Button(action: {
+                            newItemCategory = "时间"
+                        }) {
+                            Text("时间")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(newItemCategory == "时间" ? Color.blue.opacity(0.1) : Color(UIColor.systemGray6))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(newItemCategory == "时间" ? Color.blue : Color.clear, lineWidth: 1)
+                                        )
+                                )
+                                .foregroundColor(newItemCategory == "时间" ? .blue : .black)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // 按钮区域
+                    HStack {
+                        Button(action: {
+                            isAddingItem = false
+                        }) {
+                            Text("取消")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(Color(UIColor.systemGray5))
+                                .cornerRadius(8)
+                                .foregroundColor(.black)
+                        }
+                        
+                        Button(action: {
+                            addNewItem()
+                        }) {
+                            Text("添加")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(Color.black)
+                                .cornerRadius(8)
+                                .foregroundColor(.white)
+                        }
+                        .disabled(newItemTitle.isEmpty)
                     }
                 }
-                .padding(.bottom, 20)
+                .padding(20)
+                .background(Color.white)
+                .cornerRadius(16)
+                .shadow(radius: 10)
+                .padding(.horizontal, 20)
+                .frame(maxHeight: 500)
             }
         }
-        .edgesIgnoringSafeArea(.top)
-        .background(Color(UIColor.systemGray6))
     }
     
     // 根据选中的分类筛选项目
@@ -206,6 +345,35 @@ struct SubtractionListView: View {
         } else {
             return subtractionItems
         }
+    }
+    
+    // 添加新项目
+    func addNewItem() {
+        // 检查输入是否有效
+        guard !newItemTitle.isEmpty, !newItemDescription.isEmpty else {
+            return
+        }
+        
+        // 创建新项目
+        let newItem = SubtractionItem(
+            id: (subtractionItems.map { $0.id }.max() ?? 0) + 1,
+            title: newItemTitle,
+            description: newItemDescription,
+            category: newItemCategory,
+            progress: 0.0
+        )
+        
+        // 添加到数组中
+        subtractionItems.append(newItem)
+        
+        // 输出调试信息
+        print("添加新项目: \(newItem.title), 当前列表数量: \(subtractionItems.count)")
+        
+        // 重置表单
+        newItemTitle = ""
+        newItemDescription = ""
+        newItemCategory = "物质"
+        isAddingItem = false
     }
 }
 
@@ -539,37 +707,183 @@ struct HabitView: View {
         )
     ]
     
+    // 添加习惯的状态
+    @State private var isAddingHabit = false
+    @State private var newHabitTitle = ""
+    @State private var newHabitDescription = ""
+    @State private var newHabitTime = Date()
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                ForEach(habitItems) { item in
-                    HabitItemRow(item: item)
-                }
-            }
-            .background(Color(UIColor.systemGray6))
-        }
-        .overlay(
-            VStack {
-                Spacer()
-                Button(action: {
-                    // 添加新习惯逻辑
-                }) {
-                    ZStack {
-                        Circle()
-                            .fill(Color(red: 0.1, green: 0.15, blue: 0.25))
-                            .frame(width: 60, height: 60)
-                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        
-                        Image(systemName: "plus")
-                            .font(.system(size: 30, weight: .medium))
-                            .foregroundColor(.white)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(habitItems) { item in
+                        HabitItemRow(item: item)
                     }
                 }
-                .padding(.bottom, 20)
+                .background(Color(UIColor.systemGray6))
             }
+            .overlay(
+                VStack {
+                    Spacer()
+                    Button(action: {
+                        isAddingHabit = true
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color(red: 0.1, green: 0.15, blue: 0.25))
+                                .frame(width: 60, height: 60)
+                                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                            
+                            Image(systemName: "plus")
+                                .font(.system(size: 30, weight: .medium))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .padding(.bottom, 20)
+                }
+            )
+            .background(Color(UIColor.systemGray6))
+            .edgesIgnoringSafeArea(.bottom)
+            
+            // 添加新习惯的表单
+            if isAddingHabit {
+                Color.black.opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        isAddingHabit = false
+                    }
+                
+                VStack(spacing: 20) {
+                    Text("添加新习惯")
+                        .font(.system(size: 22, weight: .bold))
+                        .padding(.top, 5)
+                    
+                    // 习惯名称输入框
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("习惯名称")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                            .padding(.leading, 5)
+                        
+                        TextField("例如：晨跑", text: $newHabitTitle)
+                            .font(.system(size: 18))
+                            .padding()
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(8)
+                    }
+                    
+                    // 习惯描述输入框
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("描述")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                            .padding(.leading, 5)
+                        
+                        TextField("可选：简短描述这个习惯", text: $newHabitDescription)
+                            .font(.system(size: 18))
+                            .padding()
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(8)
+                    }
+                    
+                    // 时间选择器
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("时间")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.gray)
+                            .padding(.leading, 5)
+                        
+                        DatePicker("", selection: $newHabitTime, displayedComponents: .hourAndMinute)
+                            .datePickerStyle(WheelDatePickerStyle())
+                            .frame(maxHeight: 120)
+                            .labelsHidden()
+                    }
+                    
+                    Spacer()
+                    
+                    // 按钮区域
+                    HStack {
+                        Button(action: {
+                            isAddingHabit = false
+                        }) {
+                            Text("取消")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(Color(UIColor.systemGray5))
+                                .cornerRadius(8)
+                                .foregroundColor(.black)
+                        }
+                        
+                        Button(action: {
+                            addNewHabit()
+                        }) {
+                            Text("添加")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 15)
+                                .background(Color(red: 0.1, green: 0.15, blue: 0.25))
+                                .cornerRadius(8)
+                                .foregroundColor(.white)
+                        }
+                        .disabled(newHabitTitle.isEmpty)
+                    }
+                }
+                .padding(20)
+                .background(Color.white)
+                .cornerRadius(16)
+                .shadow(radius: 10)
+                .padding(.horizontal, 20)
+                .frame(maxHeight: 550)
+            }
+        }
+    }
+    
+    // 添加新习惯
+    func addNewHabit() {
+        // 检查输入是否有效
+        guard !newHabitTitle.isEmpty else {
+            return
+        }
+        
+        // 生成时间字符串
+        let timeString = timeFormatter.string(from: newHabitTime)
+        
+        // 创建新习惯
+        let newHabit = HabitItem(
+            id: (habitItems.map { $0.id }.max() ?? 0) + 1,
+            title: newHabitTitle,
+            description: newHabitDescription.isEmpty ? "新习惯" : newHabitDescription,
+            time: timeString,
+            isCompleted: false
         )
-        .background(Color(UIColor.systemGray6))
-        .edgesIgnoringSafeArea(.bottom)
+        
+        // 输出调试信息
+        print("添加新习惯: \(newHabit.title), 时间: \(timeString), 当前列表数量: \(habitItems.count)")
+        
+        // 按时间顺序插入
+        var insertIndex = habitItems.count
+        for (index, item) in habitItems.enumerated() {
+            if let itemTime = timeFormatter.date(from: item.time),
+               let newTime = timeFormatter.date(from: timeString),
+               itemTime > newTime {
+                insertIndex = index
+                break
+            }
+        }
+        
+        // 添加到数组中
+        habitItems.insert(newHabit, at: insertIndex)
+        
+        // 重置表单
+        newHabitTitle = ""
+        newHabitDescription = ""
+        newHabitTime = Date()
+        isAddingHabit = false
     }
 }
 
