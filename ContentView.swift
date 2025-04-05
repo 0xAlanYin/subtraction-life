@@ -720,18 +720,28 @@ struct HabitView: View {
     
     var body: some View {
         ZStack {
+            // 主背景
+            Color(UIColor.systemGray6)
+                .edgesIgnoringSafeArea(.all)
+            
+            // 内容
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(habitItems) { item in
-                        HabitItemRow(item: item)
+                        HabitItemRow(item: item, toggleCompletion: toggleCompletion)
                     }
+                    // 添加一些额外空间在底部，确保底部按钮不会覆盖内容
+                    Spacer().frame(height: 80)
                 }
-                .background(Color(UIColor.systemGray6))
             }
-            .overlay(
-                VStack {
+            
+            // 底部添加按钮
+            VStack {
+                Spacer()
+                HStack {
                     Spacer()
                     Button(action: {
+                        resetForm()
                         isAddingHabit = true
                     }) {
                         ZStack {
@@ -745,20 +755,21 @@ struct HabitView: View {
                                 .foregroundColor(.white)
                         }
                     }
+                    .padding(.trailing, 20)
                     .padding(.bottom, 20)
                 }
-            )
-            .background(Color(UIColor.systemGray6))
-            .edgesIgnoringSafeArea(.bottom)
+            }
             
             // 添加新习惯的表单
             if isAddingHabit {
+                // 半透明背景
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         isAddingHabit = false
                     }
                 
+                // 表单内容
                 VStack(spacing: 20) {
                     Text("添加新习惯")
                         .font(.system(size: 22, weight: .bold))
@@ -843,6 +854,21 @@ struct HabitView: View {
         }
     }
     
+    // 重置表单
+    private func resetForm() {
+        newHabitTitle = ""
+        newHabitDescription = ""
+        newHabitTime = Date()
+    }
+    
+    // 切换习惯完成状态
+    func toggleCompletion(_ item: HabitItem) {
+        if let index = habitItems.firstIndex(where: { $0.id == item.id }) {
+            habitItems[index].isCompleted.toggle()
+            print("切换习惯 '\(item.title)' 完成状态为: \(habitItems[index].isCompleted ? "已完成" : "未完成")")
+        }
+    }
+    
     // 添加新习惯
     func addNewHabit() {
         // 检查输入是否有效
@@ -879,17 +905,18 @@ struct HabitView: View {
         // 添加到数组中
         habitItems.insert(newHabit, at: insertIndex)
         
-        // 重置表单
-        newHabitTitle = ""
-        newHabitDescription = ""
-        newHabitTime = Date()
+        // 关闭表单
         isAddingHabit = false
+        
+        // 重置表单
+        resetForm()
     }
 }
 
 // 习惯项目行视图
 struct HabitItemRow: View {
     var item: HabitItem
+    var toggleCompletion: (HabitItem) -> Void
     
     var body: some View {
         HStack(spacing: 0) {
@@ -930,7 +957,7 @@ struct HabitItemRow: View {
                 }
                 .padding(.bottom, 5)
                 
-                HabitCard(item: item)
+                HabitCard(item: item, toggleCompletion: toggleCompletion)
             }
             .padding(.trailing, 20)
             .padding(.bottom, 20)
@@ -941,6 +968,7 @@ struct HabitItemRow: View {
 // 习惯卡片视图
 struct HabitCard: View {
     var item: HabitItem
+    var toggleCompletion: (HabitItem) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -951,25 +979,29 @@ struct HabitCard: View {
                 
                 Spacer()
                 
-                if item.isCompleted {
-                    ZStack {
-                        Circle()
-                            .fill(Color.green)
-                            .frame(width: 28, height: 28)
-                        
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                } else {
-                    Circle()
-                        .fill(Color.white)
-                        .frame(width: 28, height: 28)
-                        .overlay(
+                Button(action: {
+                    toggleCompletion(item)
+                }) {
+                    if item.isCompleted {
+                        ZStack {
                             Circle()
-                                .stroke(Color.gray.opacity(0.3), lineWidth: 1.5)
+                                .fill(Color.green)
                                 .frame(width: 28, height: 28)
-                        )
+                            
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                    } else {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 28, height: 28)
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1.5)
+                                    .frame(width: 28, height: 28)
+                            )
+                    }
                 }
             }
             
